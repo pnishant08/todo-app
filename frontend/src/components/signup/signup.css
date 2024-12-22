@@ -1,0 +1,66 @@
+/* General Layout */
+.signup {
+    width: 100%;
+    height: 100vh;
+}
+
+.coloumn {
+    height: 100vh; 
+}
+
+.signup-heading {
+    text-align: start;
+    font-size: 80px;
+    color:#f9f9f9;
+}
+
+.col-left {
+    opacity: 0.8;
+    background-color:rgba(255,0,0,0.836);
+    /* color:black; */
+}
+
+/* Button Styles */
+.btn-signup {
+    border: none;
+    color: white;
+    font-weight: bold;
+    opacity: 0.8;
+    background-color: rgba(255,0,0,0.836);
+    outline: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.btn-signup:hover {
+    opacity: 1;
+    background-color: rgba(255,0,0,0.836);
+}
+
+/* Input Group Styles */
+.input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    background: #f9f9f9;
+}
+
+/* Icon Styling */
+.input-group .icon {
+    margin-right: 10px;
+    color: #888;
+    font-size: 20px;
+}
+
+/* Input Field Styling */
+.input-group .form-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background: transparent;
+    padding: 5px;
+}
