@@ -15,7 +15,7 @@ const Navbar = () => {
                </button>
                <div className="collapse navbar-collapse" id="navbarSupportedContent">
                  <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                   <li className="nav-item">
+                   <li className="nav-item mx-2">
                      <a className="nav-link active" aria-current="page" href="#">
                         Home
                      </a>
@@ -23,6 +23,11 @@ const Navbar = () => {
                    <li className="nav-item mx-2">
                      <a className="nav-link active" aria-current="page" href="#">
                         About Us
+                     </a>
+                   </li>
+                   <li className="nav-item mx-2">
+                     <a className="nav-link active" aria-current="page" href="#">
+                        Todo
                      </a>
                    </li>
                    <li className="nav-item mx-2">
@@ -40,14 +45,7 @@ const Navbar = () => {
                         Sign Out
                      </a>
                    </li>
-                   <li className="nav-item">
-                     <a className="nav-link active" aria-current="page" href="#">
-                        <img 
-                           className='img-fluid user-png'
-                           src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                           alt='/' />
-                     </a>
-                   </li>
+                   
                  </ul>
                </div>
              </div>
