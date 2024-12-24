@@ -1,7 +1,10 @@
-.todo{
-    width: 100%;
-    height: 100vh;
+.todo {
+  width: 100%;
+  min-height: 100vh; 
+  max-height: auto;
+  position: relative;
 }
+
 .todo-inputs {
     border: none;
     outline: none;
@@ -16,3 +19,54 @@
     box-shadow:rgba(0,0,0,0.35) 0px 5px 15px;
 }
 
+.todocard {
+    border: 1px solid #ddd; 
+    border-radius: 8px; /* Rounded corners */
+    padding: 16px; /* Add padding inside the card */
+    background-color:white ; /* Light background color */
+    overflow-wrap: break-word; /* Ensure long words break and stay inside */
+    word-wrap: break-word; /*Support for older browsers8*/
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* Optional: Add shadow for depth */
+  }
+
+.todocard-p{
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.card-icons{
+    font-size: 18px;
+}
+
+.del{
+    color: red;
+}
+.card-icon-head{
+    /* padding: 5px; */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.card-icon-head:hover{
+     box-shadow: rgba(0,0,0,0.35) 0px 5px 5px;
+}
+
+
+.todo-update{
+    position: absolute;
+    position: fixed;
+    width: 100%;
+    height: 80vh;
+    top: 80px;
+    left: 0px;
+    background-color: blanchedalmond;
+}
+
+.update{
+    height: 100%;
+}
+
+/* update box ko sahi kar rha hu */
+.u{
+    box-shadow: rgba(0,0,0,0.35) 0px 5px 5px;
+}
