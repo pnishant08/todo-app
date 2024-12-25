@@ -26,12 +26,13 @@ router.post("/register",async(req,res)=>{
 
         await newuser.save();
         res.status(201).json({
-            message:'User register successfully',
-            user:{
+            message:'User register successfully'
+            //isko use nhi kar rha kyuki backend pe mujhe user ka data nhi chahiye bas check krne ke liye tha
+            /*user:{
                 id:newuser._id,
                 username:newuser.username,
                 email:newuser.email,
-            },
+            },*/
         });
     }catch(error){
        console.log("error occured in register",error);
