@@ -39,7 +39,7 @@ const Todo = () => {
 
   const dis=(value)=>{
     console.log(value);
-    document.getElementById("todo-update").style.display="block";
+    document.getElementById("todo-update").style.display=value;
   }
 
   return (
@@ -96,7 +96,7 @@ const Todo = () => {
     </div>
     <div className="todo-update " id='todo-update'  style={{ display: 'none' }}>
       <div className="container update">
-         <Update/>
+         <Update  display={dis}/>
       </div>
     </div>
     </>

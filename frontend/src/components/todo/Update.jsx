@@ -1,6 +1,7 @@
 import React from 'react'
+import { MdDisplaySettings } from 'react-icons/md'
 
-const Update = () => {
+const Update = ({display}) => {
   return (
     <div className='p-5 d-flex justify-content-center align-item-start flex-column update'>
      <h3>Update Your Task</h3>
@@ -15,7 +16,11 @@ const Update = () => {
      <button className="btn btn-success my-4 w-10">
         Update
      </button>
-     <button className="btn btn-danger my-4 w-10 mx-3">
+     <button className="btn btn-danger my-4 w-10 mx-3"
+       onClick={()=>{
+        display("none")
+       }}
+       >
         Close
      </button>
      </div>
