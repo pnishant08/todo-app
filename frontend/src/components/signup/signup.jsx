@@ -3,11 +3,13 @@ import "./signup.css";
 import HeadingComp from './HeadingComp';
 import {useState} from 'react';
 import axios from "axios";
-
+import {useNavigate}from "react-router-dom";
 import { FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
 
 
 const Signup = () => {
+
+  const history=useNavigate();
 
   const [Inputs, setInputs] = useState({
     "email":"",
@@ -31,6 +33,7 @@ const Signup = () => {
         "username": "",
         "password": ""
       });
+      history("/signin")
     } catch (error) {
       console.error("Error during registration:", error.response ? error.response.data : error);
       alert(error.response ? error.response.data.message : 'An error occurred during registration.');

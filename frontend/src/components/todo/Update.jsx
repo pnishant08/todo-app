@@ -1,5 +1,5 @@
 import React from 'react'
-import { MdDisplaySettings } from 'react-icons/md'
+// import { MdDisplaySettings } from 'react-icons/md'
 
 const Update = ({display}) => {
   return (

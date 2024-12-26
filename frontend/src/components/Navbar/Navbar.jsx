@@ -2,8 +2,18 @@ import React from 'react';
 import "./Navbar.css";
 import {LuListTodo} from "react-icons/lu";
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import {useDispatch} from 'react-redux'
+import {authActions} from '../../store';
 
 const Navbar = () => {
+  const isLoggedIn =useSelector((state)=>state.isLoggedIn);
+  // console.log(isLoggedIn);
+  const dispatch=useDispatch();
+  const logout=()=>{
+     sessionStorage.clear("id");
+     dispatch(authActions.logout());
+  }
   return (
     <div>
           <nav className="navbar navbar-expand-lg bg-body">
@@ -35,7 +45,9 @@ const Navbar = () => {
                         Todo
                      </Link>
                    </li>
-                   <li className="nav-item mx-2">
+                   {!isLoggedIn &&
+                     <>
+                     <li className="nav-item mx-2">
                      <Link className="nav-link active btn-nav" 
                        aria-current="page" 
                        to="/signup">
@@ -49,11 +61,17 @@ const Navbar = () => {
                         Sign In
                      </Link>
                    </li>
-                   <li className="nav-item mx-2">
+                     </>
+                   }
+                   {isLoggedIn &&
+                   <>
+                   <li className="nav-item mx-2" onClick={logout}>
                      <Link className="nav-link active btn-nav" aria-current="page" to="#">
                         Sign Out
                      </Link>
                    </li>
+                   </>
+                   }
                    
                  </ul>
                </div>

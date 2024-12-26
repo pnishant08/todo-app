@@ -57,8 +57,12 @@ router.post("/login",async(req,res)=>{
        }
        //yha token ka use bhi aage karna hai abhi nhi kar rha hu
 
-       const {passsword:userPassword,...others}=user._doc;
-       res.status(200).json({others});
+       const {password:userPassword,...others}=user._doc;
+       res.status(200)
+          .json({
+            message: 'Login successful',
+            user: others,
+          });
 
 
     }catch(error){
