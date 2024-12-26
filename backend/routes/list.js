@@ -7,8 +7,9 @@ const { request } = require("express");
 //create task 
 router.post("/addTask",async(req,res)=>{
     try{
-        const {title,body,email}=req.body;
-        const existingUser=await User.findOne({email});
+        const {title,body,id}=req.body;
+        // console.log(id);
+        const existingUser=await User.findById(id);
         if(existingUser){
             const list =new List({title,body,user:existingUser});
             await list.save().then(()=>res.status(200).json({list}));
@@ -54,25 +55,24 @@ router.put("/updateTask/:id",async(req,res)=>{
 
 //delete task
 router.delete("/deleteTask/:id",async(req,res)=>{
-    try{
-        const {email}=req.body;
-        const existingUser=await User.findOne({email});
-
-        if(!existingUser){
-           res.status(404).json({message:"User Not Found"});
+    try {
+        const {id} = req.body;
+        const existingUser = await User.findOneAndUpdate(id);
+        
+        if(!existingUser) {
+            return res.status(404).json({message:"User Not Found"});
         }
-
-        const deleteTask= await List.findByIdAndDelete(req.params.id);
-
-        if(!deleteTask){
+        
+        const deleteTask = await List.findByIdAndDelete(req.params.id);
+        
+        if(!deleteTask) {
             return res.status(404).json({message:"Task Not Found"});
         }
         
-        res.status(200).json({message:"Task deleted successfully"})
-
-    }catch(error){
-        res.status(400).json("error",error)
-        console.log("error",error);
+        return res.status(200).json({message:"Task deleted successfully"});
+    } catch(error) {
+        console.log("Error:", error);
+        return res.status(400).json({error: error.message});
     }
 })
 

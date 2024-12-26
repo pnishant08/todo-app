@@ -4,11 +4,39 @@ import TodoCards from './TodoCards';
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Update from './Update';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../../store';
+import axios from 'axios';
+import { useEffect } from 'react';
+
+// let id=sessionStorage.getItem("id");
 
 const Todo = () => {
-  
+  const [userId, setUserId] = useState(sessionStorage.getItem("id"));
   const [Inputs,setInputs]=useState({title:"",body:""});
   const [Array,setArray]=useState([]);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setUserId(sessionStorage.getItem("id"));
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Check for session changes
+    const interval = setInterval(() => {
+      const currentId = sessionStorage.getItem("id");
+      if (currentId !== userId) {
+        setUserId(currentId);
+      }
+    }, 1000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [userId]);
+
 
   const show=()=>{
          document.getElementById('textarea').style.display="block";
@@ -17,30 +45,74 @@ const Todo = () => {
         const {name,value}=e.target;
         setInputs({...Inputs,[name]:value});
   };
-  const submit=()=>{
+  const submit=async()=>{
         // console.log(Inputs);
         if(Inputs.title===""||Inputs.body===""){
           toast.error("All fields are required")
         }else{
-          setArray([...Array,Inputs]);
-          setInputs({title:"",body:""})
-          toast.success("Task added successfully")
+             if(userId){
+              await axios.post("http://localhost:3000/api/v2/addTask",{
+                title:Inputs.title,
+                body:Inputs.body,
+                id:userId,
+                })
+                .then((response)=>{
+                  console.log(response)
+                })
+                // console.log(sessionStorage.getItem('id'));
+                // console.log(Id);
+                // setArray([...Array,Inputs]);
+                setInputs({title:"",body:""})
+                toast.success("Task added successfully")
+             }
+             else{
+              console.log(userId);
+              setArray([...Array,Inputs]);
+              setInputs({title:"",body:""})
+              alert("Task added successfully but Login First to save the data");
+             }
         }
   }
 
   // console.log(Array);
-  const del=(id)=>{
-    const deletedTask = Array[id]?.title;
-    // console.log(id);
-    Array.splice(id,1);
-    setArray([...Array]);
-    toast.info(`Task ${deletedTask} deleted Successfully`)
+  const del = async(id) => {
+    try {
+       console.log(id);
+        const response = await axios.delete(`http://localhost:3000/api/v2/deleteTask/${id}`,
+          {
+            data:{id:userId}
+          }
+        );
+        if (response.status === 200) {
+            // Update your local state here
+            const newArray = Array.filter((_, index) => index !== id);
+            setArray(newArray);
+            toast.success("Task deleted successfully");
+        }
+    } catch (error) {
+        console.error("Error deleting task:", error);
+        toast.error(error.response?.data?.message || "Error deleting task");
     }
+}
 
   const dis=(value)=>{
     console.log(value);
     document.getElementById("todo-update").style.display=value;
   }
+
+
+  useEffect(() => {
+    const fetch=async()=>{
+      await axios
+      .get(`http://localhost:3000/api/v2/getTask/${userId}`)
+      .then((response)=>{
+       setArray(response.data.list);
+      })
+    }
+    fetch();
+  }, [submit]);
+
+
 
   return (
     <>
@@ -83,7 +155,7 @@ const Todo = () => {
                        <div className="col-lg-3 col-10 mx-5 my-5 " key={index}>
                           <TodoCards title={item.title} 
                                      body={item.body} 
-                                     id={index} 
+                                     id={item._id} 
                                      delid={ del}
                                      display={dis}
                                      />
