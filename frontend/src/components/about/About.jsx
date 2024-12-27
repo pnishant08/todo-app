@@ -3,7 +3,7 @@ import "./About.css";
 
 const About = () => {
   return (
-    <div className='about d-flex justifu-content-center align-items-center'>
+    <div className='about d-flex justify-content-center align-items-center '>
             <div className="container">
             <div className='d-flex'>;
                <h1>About Us</h1>

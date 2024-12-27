@@ -1,17 +1,20 @@
+import { useRef } from 'react';
 import React, { useState } from 'react';
 import "./Todo.css";
 import TodoCards from './TodoCards';
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Update from './Update';
-import { useDispatch } from 'react-redux';
-import { authActions } from '../../store';
+// import { useDispatch } from 'react-redux';
+// import { authActions } from '../../store';
 import axios from 'axios';
 import { useEffect } from 'react';
+
 
 // let id=sessionStorage.getItem("id");
 
 const Todo = () => {
+  const hasErrorToastShown = useRef(false); // Track if the toast has been shown
   const [userId, setUserId] = useState(sessionStorage.getItem("id"));
   const [Inputs,setInputs]=useState({title:"",body:""});
   const [Array,setArray]=useState([]);
@@ -69,30 +72,35 @@ const Todo = () => {
               console.log(userId);
               setArray([...Array,Inputs]);
               setInputs({title:"",body:""})
-              alert("Task added successfully but Login First to save the data");
+              toast.info("Task added successfully but Login First to save the data");
              }
         }
   }
 
   // console.log(Array);
   const del = async(id) => {
-    try {
-       console.log(id);
-        const response = await axios.delete(`http://localhost:3000/api/v2/deleteTask/${id}`,
-          {
-            data:{id:userId}
-          }
-        );
-        if (response.status === 200) {
-            // Update your local state here
-            const newArray = Array.filter((_, index) => index !== id);
-            setArray(newArray);
-            toast.success("Task deleted successfully");
-        }
-    } catch (error) {
-        console.error("Error deleting task:", error);
-        toast.error(error.response?.data?.message || "Error deleting task");
-    }
+      if(id){
+        try {
+          console.log(id);
+           const response = await axios.delete(`http://localhost:3000/api/v2/deleteTask/${id}`,
+             {
+               data:{id:userId}
+             }
+           );
+           if (response.status === 200) {
+               // Update your local state here
+               const newArray = Array.filter((_, task) => task._id !== id);
+               setArray(newArray);
+               toast.success("Task deleted successfully");
+           }
+       } catch (error) {
+           console.error("Error deleting task:", error);
+           toast.error(error.response?.data?.message || "Error deleting task");
+       }
+      }
+      else{
+        toast.error("Deletion are not allowed");
+      }
 }
 
   const dis=(value)=>{
@@ -101,16 +109,30 @@ const Todo = () => {
   }
 
 
+
   useEffect(() => {
-    const fetch=async()=>{
-      await axios
-      .get(`http://localhost:3000/api/v2/getTask/${userId}`)
-      .then((response)=>{
-       setArray(response.data.list);
-      })
-    }
-    fetch();
+  
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/v2/getTask/${userId}`);
+        if (response.data && response.data.list) {
+          setArray(response.data.list);
+          hasErrorToastShown.current = false; // Reset the error toast flag on success
+        }
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+  
+        // Show toast only if it hasn't been shown
+        if (!hasErrorToastShown.current) {
+          toast.info("Signup or Login for better experience");
+          hasErrorToastShown.current = true; // Set the flag to true
+        }
+      }
+    };
+  
+    fetchTasks();
   }, [submit]);
+  
 
 
 

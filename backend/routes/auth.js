@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/user");
 const bcrypt =require("bcrypt");
-
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 //SIGN UP
 router.post("/register",async(req,res)=>{
@@ -11,6 +11,10 @@ router.post("/register",async(req,res)=>{
         if(!username||!email||!password){
             return res.status(400).json({message:'All fields are required'});
         }
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: 'Invalid email format !!' });
+        }
+
         const existinguser =await User.findOne({email});
         if(existinguser){
             return res.status(400).json({message:'User already exist'});

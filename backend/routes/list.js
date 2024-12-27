@@ -54,27 +54,43 @@ router.put("/updateTask/:id",async(req,res)=>{
 })
 
 //delete task
-router.delete("/deleteTask/:id",async(req,res)=>{
+router.delete("/deleteTask/:id", async (req, res) => {
     try {
-        const {id} = req.body;
-        const existingUser = await User.findOneAndUpdate(id);
-        
-        if(!existingUser) {
-            return res.status(404).json({message:"User Not Found"});
+        const userId = req.body.id; // Extract user ID from the request body
+        const taskId = req.params.id; // Extract task ID from the URL params
+
+        // Validate input
+        if (!userId || !taskId) {
+            return res.status(400).json({ message: "User ID and Task ID are required" });
         }
-        
-        const deleteTask = await List.findByIdAndDelete(req.params.id);
-        
-        if(!deleteTask) {
-            return res.status(404).json({message:"Task Not Found"});
+
+        // Update user to remove the task reference
+        const existingUser = await User.findOneAndUpdate(
+            { _id: userId }, // Query to find the user
+            { $pull: { list: taskId } }, // Pull the task ID from the user's list
+            { new: true } // Return the updated document
+        );
+
+        if (!existingUser) {
+            return res.status(404).json({ message: "User not found" });
         }
-        
-        return res.status(200).json({message:"Task deleted successfully"});
-    } catch(error) {
-        console.log("Error:", error);
-        return res.status(400).json({error: error.message});
+
+        console.log("Updated user:", existingUser);
+
+        // Delete the task from the List collection
+        const deleteTask = await List.findByIdAndDelete(taskId);
+
+        if (!deleteTask) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+
+        return res.status(200).json({ message: "Task deleted successfully" });
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(400).json({ error: error.message });
     }
-})
+});
+
 
 // get task
 router.get("/getTask/:id",async(req,res)=>{
