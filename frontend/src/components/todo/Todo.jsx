@@ -89,7 +89,7 @@ const Todo = () => {
            );
            if (response.status === 200) {
                // Update your local state here
-               const newArray = Array.filter((_, task) => task._id !== id);
+               const newArray = Array.filter((task) => task._id !== id);
                setArray(newArray);
                toast.success("Task deleted successfully");
            }
