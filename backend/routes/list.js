@@ -24,19 +24,19 @@ router.post("/addTask",async(req,res)=>{
 //update task
 router.put("/updateTask/:id",async(req,res)=>{
     try{
-       const {title,body,email}=req.body;
+       const {title,body}=req.body;
        // valid inputs dalo
-       if(!title||!email||!body){
-        return res.status(400).json({message:"All fields are required"});
+       if(!title||!body){
+        return res.status(200).json({message:"All fields are required"});
        }
-       
+    //    console.log(req.params.id) //yha id to shayad task ki hai
        // check karo user exist kar bhi rha hai ya nhi
-       const existingUser=await User.findOne({email});
-       if(!existingUser){
-        return res.status(400).json({message:"User not found"});
-       }
+    //    const existingUser=await User.findById(req.params.id);
+    //    if(!existingUser){
+    //     return res.status(200).json({message:"User not found"});
+    //    }
 
-       //agar mile to update karo
+    //    agar mile to update karo
 
        const updatedTask=await List.findByIdAndUpdate(
         req.params.id,
@@ -44,7 +44,7 @@ router.put("/updateTask/:id",async(req,res)=>{
         {new:true}
        );
        if(!updatedTask){
-        return res.status(400).json({message:"Task Not Found"});
+        return res.status(200).json({message:"Task Not Found"});
        }
 
        res.status(200).json({message:"Task Updated",updatedTask});

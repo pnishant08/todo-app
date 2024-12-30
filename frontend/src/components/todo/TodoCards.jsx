@@ -3,7 +3,7 @@ import { MdDelete } from "react-icons/md";
 import { GrDocumentUpdate } from "react-icons/gr";
 
 
-const TodoCards = ({title,body,id,delid,display}) => {
+const TodoCards = ({title,body,id,delid,display,updateId,tobeUpdate}) => {
   return (
     <div className='todocard p-3'>
         <div>
@@ -14,6 +14,9 @@ const TodoCards = ({title,body,id,delid,display}) => {
             <div className='px-2 py-1 d-flex justify-content-center align-items-center card-icon-head'
               onClick={()=>{
                 display("block");
+                // console.log(updateId)
+                tobeUpdate(updateId)
+                console.log("updated todocards",updateId)
               }}   
             >
             <GrDocumentUpdate className='card-icons'/>

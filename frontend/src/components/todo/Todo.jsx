@@ -10,10 +10,11 @@ import Update from './Update';
 import axios from 'axios';
 import { useEffect } from 'react';
 
-
+// let toUpdateArray =[];
 // let id=sessionStorage.getItem("id");
 
 const Todo = () => {
+  const [taskToUpdate,setTaskToUpdate]=useState(null);
   const hasErrorToastShown = useRef(false); // Track if the toast has been shown
   const [userId, setUserId] = useState(sessionStorage.getItem("id"));
   const [Inputs,setInputs]=useState({title:"",body:""});
@@ -103,6 +104,20 @@ const Todo = () => {
       }
 }
 
+const update=(index)=>{
+     console.log(Array[index])
+     setTaskToUpdate(Array[index]);
+    //  console.log(toUpdateArray)
+}
+const handleUpdatetask = (updatedTask) => {
+  setArray((prevArray) => {
+    return prevArray.map((task) =>
+      task._id === updatedTask._id ? updatedTask : task
+    );
+  });
+};
+
+
   const dis=(value)=>{
     console.log(value);
     document.getElementById("todo-update").style.display=value;
@@ -180,6 +195,8 @@ const Todo = () => {
                                      id={item._id} 
                                      delid={ del}
                                      display={dis}
+                                     updateId={index}
+                                     tobeUpdate={update}
                                      />
                         </div>
                         </>
@@ -190,7 +207,7 @@ const Todo = () => {
     </div>
     <div className="todo-update " id='todo-update'  style={{ display: 'none' }}>
       <div className="container update">
-         <Update  display={dis}/>
+         <Update  display={dis} update={taskToUpdate||{title:"",body:""}} refreshTask={handleUpdatetask} />
       </div>
     </div>
     </>
